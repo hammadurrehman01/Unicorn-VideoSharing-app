@@ -1,11 +1,9 @@
-
+import { Stack } from "@mui/material";
 
 const Home = () => {
-   
-    return (
-        <div>
 
-        </div>
+    return (
+        <Stack></Stack>
     )
 }
 
