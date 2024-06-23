@@ -1,6 +1,5 @@
 import { Box, Button, Input, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
-
 import "../index.css"
 import Textlg from "./custom/Textlg"
 import Textxl from "./custom/Textxl"
