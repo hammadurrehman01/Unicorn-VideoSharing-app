@@ -1,8 +1,10 @@
 import { createTheme } from '@mui/material/styles';
-import { green, purple } from '@mui/material/colors';
+import "../index.css"
 
 const theme = createTheme({
     typography: {
         fontFamily: 'poppins',
     },
 });
+
+export default theme

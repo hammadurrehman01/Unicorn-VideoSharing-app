@@ -1,5 +1,4 @@
 import { Stack } from "@mui/material"
-import Navbar from "./components/Navbar"
 import Home from "./pages/HomeData"
 
 const App = () => {
