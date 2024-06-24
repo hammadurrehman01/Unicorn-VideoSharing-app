@@ -7,8 +7,25 @@ import Textsm from "./custom/Textsm"
 import Textmd from "./custom/Textsm"
 import UploadImage from "./custom/UploadImage";
 import PasswordInput from "./custom/PasswordInput";
+import { useFormik } from "formik";
+
 
 const Signup = () => {
+
+    const initialValues = {
+        fullname: "",
+        username: "",
+        email: "",
+        password: "",
+    }
+
+    const { errors, values, handleBlur, handleChange, handleSubmit } = useFormik({
+        initialValues: initialValues,
+        onSubmit: (values) => {
+            console.log("values =======>", values);
+        }
+    })
+
     return (
         <Stack sx={{
             width: "100%",
@@ -36,22 +53,22 @@ const Signup = () => {
                 <Stack direction={{ xs: "column", lg: "row" }} gap={"1.5rem"}>
                     <Stack sx={{ marginTop: "1rem", }}>
                         <Textsm text="Fullname*" />
-                        <Input disableUnderline={true} placeholder="Enter your fullname" sx={{ backgroundColor: "#F2F2F2", marginTop: "8px", py: "6px", px: "16px", borderRadius: "0.5rem" }}></Input>
+                        <Input disableUnderline={true} onChange={handleChange} type="text" value={values.fullname} name="fullname" placeholder="Enter your fullname" sx={{ backgroundColor: "#F2F2F2", marginTop: "8px", py: "6px", px: "16px", borderRadius: "0.5rem" }}></Input>
                     </Stack>
                     <Stack sx={{ marginTop: { xs: "0rem", lg: "1rem" } }}>
                         <Textsm text="Email*" />
-                        <Input type="email" disableUnderline={true} placeholder="Enter your email" sx={{ backgroundColor: "#F2F2F2", marginTop: "8px", py: "6px", px: "16px", borderRadius: "0.5rem" }}></Input>
+                        <Input onChange={handleChange} type="email" value={values.email ? values.email : ""} disableUnderline={true} name="email" placeholder="Enter your email" sx={{ backgroundColor: "#F2F2F2", marginTop: "8px", py: "6px", px: "16px", borderRadius: "0.5rem" }}></Input>
                     </Stack>
                 </Stack>
 
                 <Stack direction={{ xs: "column", lg: "row", }} gap={"1.5rem"} >
                     <Stack sx={{ marginTop: "1rem", width: "50%" }}>
                         <Textsm text="Username*" />
-                        <Input disableUnderline={true} placeholder="Enter your username" sx={{ backgroundColor: "#F2F2F2", marginTop: "8px", py: "6px", px: "16px", borderRadius: "0.5rem", width: "100%" }}></Input>
+                        <Input onChange={handleChange} disableUnderline={true} value={values.username} name="username" placeholder="Enter your username" sx={{ backgroundColor: "#F2F2F2", marginTop: "8px", py: "6px", px: "16px", borderRadius: "0.5rem", width: "100%" }}></Input>
                     </Stack>
                     <Stack sx={{ marginTop: { xs: "0rem", lg: "1rem" }, width: "50%" }}>
                         <Textsm text="Password*" />
-                        <PasswordInput />
+                        <PasswordInput onchange={handleChange} value={values.password} />
                     </Stack>
                 </Stack>
 
@@ -71,6 +88,7 @@ const Signup = () => {
                     role={undefined}
                     disableRipple
                     tabIndex={-1}
+                    onClick={handleSubmit}
                 >
                     Sign up
                 </Button>
