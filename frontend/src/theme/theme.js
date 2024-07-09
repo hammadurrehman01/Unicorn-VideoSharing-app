@@ -3,7 +3,7 @@ import "../index.css"
 
 const theme = createTheme({
     typography: {
-        fontFamily: 'poppins',
+        fontFamily: 'poppins, Arial',
     },
 });
 

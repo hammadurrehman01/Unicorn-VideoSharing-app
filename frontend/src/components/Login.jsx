@@ -29,7 +29,7 @@ const Login = () => {
                         component="img"
                         sx={{ height: { xs: 36, lg: 48 }, width: { xs: 36, lg: 48 }, }}
                         alt="Logo"
-                        src="../../public/images/Avatar-UI-Unicorn-V2.svg"
+                        src="/images/Avatar-UI-Unicorn-V2.svg"
                     />
                     <Stack sx={{ justifyContent: "center" }}>
                         <Textlg text="Unicorn" sx={{ fontSize: { xs: "1rem", lg: "24px" } }} />
