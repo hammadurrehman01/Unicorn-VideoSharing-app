@@ -8,7 +8,7 @@ const App = () => {
       <Home />
       <Link to={"/signup"}>Signup</Link>
     </Stack>
-  )
-}
+  );
+};
 
-export default App
+export default App;

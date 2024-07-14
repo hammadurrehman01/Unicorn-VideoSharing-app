@@ -3,8 +3,8 @@ import "../index.css"
 
 const theme = createTheme({
     typography: {
-        fontFamily: ['poppins', "sans-serif"],
+        fontFamily: 'poppins, Arial',
     },
 });
 
-export default theme
+export default theme;
