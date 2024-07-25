@@ -15,9 +15,8 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const UploadImage = ({ title }) => {
+const UploadImage = ({ title, onchange, name, value }) => {
   const [file, setFile] = useState("");
-  console.log("file =>", file);
 
   const handleChange = (e) => {
     console.log(e.target.files[0]);
@@ -25,18 +24,19 @@ const UploadImage = ({ title }) => {
   };
 
   return (
-    <Stack
-      sx={{
-        backgroundColor: "#F2F2F2",
-        py: "32px",
-        borderRadius: "0.5rem",
-        marginTop: "0.5rem",
-      }}
-    > 
+    <Stack>
       {file ? (
-        <img className="h-28" src={file} alt={title} />
+        <img className="h-[128px] object-cover" src={file} alt={title} />
       ) : (
-        <>
+        <Stack
+          sx={{
+            backgroundColor: "#121212",
+            border: "1px solid #F2F2F2",
+            py: "32px",
+            borderRadius: "0.5rem",
+            marginTop: "0.5rem",
+          }}
+        >
           <Button
             sx={{ color: "gray", "&:hover": { background: "none" } }}
             component="label"
@@ -44,11 +44,13 @@ const UploadImage = ({ title }) => {
             disableRipple
             tabIndex={-1}
             startIcon={<CloudUploadIcon />}
+            onChange={onchange}
+
           >
             {title}
-            <VisuallyHiddenInput type="file" onChange={handleChange} />
+            <VisuallyHiddenInput name={name} type="file" onChange={handleChange} value={value} />
           </Button>
-        </>
+        </Stack>
       )}
     </Stack>
   );

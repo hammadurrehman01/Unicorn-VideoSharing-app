@@ -5,6 +5,8 @@ const Textxl = ({ text, sx }) => {
         <Typography sx={{
             fontSize: "32px",
             fontWeight: "bold",
+            color: "#c5d5ce",
+
             ...sx
 
         }}
