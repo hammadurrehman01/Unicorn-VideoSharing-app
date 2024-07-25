@@ -1,5 +1,5 @@
-import { Box, Button, CircularProgress, Input, Stack, TextField, Typography } from "@mui/material";
-import { Link, Router } from "react-router-dom";
+import { Button, CircularProgress, Input, Stack, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import "../index.css";
 import Textlg from "./custom/Textlg";
 import Textsm from "./custom/Textsm";
@@ -12,6 +12,7 @@ import { registerUser } from "../services/apiService";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 
 const initialValues = {
@@ -24,16 +25,13 @@ const initialValues = {
 };
 
 const Signup = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const { errors, values, handleChange, handleSubmit, touched } =
     useFormik({
       initialValues: initialValues,
       validationSchema: signUpSchema,
-      onSubmit: (values, action) => {
-        // action.resetForm();
-        // redirect("/login");
-        console.log("values=>>>", values);
+      onSubmit: () => {
         registerUserMutation.mutate();
       },
     });
@@ -41,10 +39,17 @@ const Signup = () => {
   const registerUserMutation = useMutation({
     mutationFn: async () => await registerUser(values),
     onSuccess: () => {
-      toast("You are registered successfully!");
-      setLoading(false)
+      setLoading(false);
+      toast.success("You are registered successfully!");
+      action.resetForm();
+    },
+    onError: (error) => {
+      setLoading(false);
+      toast.error(error.response.data.message);
+      action.resetForm();
     }
   });
+
 
   return (
     <>
