@@ -16,17 +16,21 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 const UploadImage = ({ title, onchange, name, value }) => {
-  const [file, setFile] = useState("");
+  const [image, setImage] = useState(null);
 
-  const handleChange = (e) => {
-    console.log(e.target.files[0]);
-    setFile(URL.createObjectURL(e.target.files[0]));
+  const handleImageUpload = (event) => {
+    console.log("event", event.target.files[0]);
+    const image = event.target.files[0];
+    if (image) {
+      const imageUrl = URL.createObjectURL(image);
+      setImage(imageUrl);
+    }
   };
 
   return (
     <Stack>
-      {file ? (
-        <img className="h-[128px] object-cover" src={file} alt={title} />
+      {image ? (
+        <img className="h-[128px] object-cover" src={image} alt={title} />
       ) : (
         <Stack
           sx={{
@@ -48,7 +52,7 @@ const UploadImage = ({ title, onchange, name, value }) => {
 
           >
             {title}
-            <VisuallyHiddenInput name={name} type="file" onChange={handleChange} value={value} />
+            <VisuallyHiddenInput name={name} type="file" accept="image/*" multiple onChange={handleImageUpload} value={value} />
           </Button>
         </Stack>
       )}
