@@ -10,7 +10,7 @@ const PasswordInput = ({ value, onchange, errors, name }) => {
     }
 
     return (
-        <Stack direction={"row"} sx={{ border: "1px solid #F2F2F2", width: "100%", marginLeft: "auto", alignItems: "center", pr: "8px", mt: "0.5rem", borderRadius: "0.5rem" }}>
+        <Stack direction={"row"} sx={{ border: "1px solid #F2F2F2", width: "100%", marginLeft: "auto", alignItems: "center", justifyContent: "space-between", pr: "8px", mt: "0.5rem", borderRadius: "0.5rem" }}>
             <Input name={name} value={value} type={isVisible ? "password" : "text"} disableUnderline={true} onChange={onchange} placeholder="Enter your password" sx={{
                 color: "white",
                 py: "6px",

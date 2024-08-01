@@ -1,7 +1,7 @@
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Button, Stack, styled } from "@mui/material";
 import { useState } from "react";
-import "../../index.css"
+import "../../index.css";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -15,14 +15,14 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const UploadImage = ({ title, onchange, name, value }) => {
+const UploadImage = ({ title, name, setFieldValue }) => {
   const [image, setImage] = useState(null);
 
   const handleImageUpload = (event) => {
-    console.log("event", event.target.files[0]);
-    const image = event.target.files[0];
-    if (image) {
-      const imageUrl = URL.createObjectURL(image);
+    const imageFile = event.target.files[0];
+    if (imageFile) {
+      setFieldValue(name, imageFile);
+      const imageUrl = URL.createObjectURL(imageFile);
       setImage(imageUrl);
     }
   };
@@ -44,15 +44,16 @@ const UploadImage = ({ title, onchange, name, value }) => {
           <Button
             sx={{ color: "gray", "&:hover": { background: "none" } }}
             component="label"
-            role={undefined}
             disableRipple
-            tabIndex={-1}
             startIcon={<CloudUploadIcon />}
-            onChange={onchange}
-
           >
             {title}
-            <VisuallyHiddenInput name={name} type="file" accept="image/*" multiple onChange={handleImageUpload} value={value} />
+            <VisuallyHiddenInput
+              name={name}
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
           </Button>
         </Stack>
       )}

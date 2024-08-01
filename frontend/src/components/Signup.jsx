@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Input, Stack, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../index.css";
 import Textlg from "./custom/Textlg";
 import Textsm from "./custom/Textsm";
@@ -13,6 +13,8 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slices/userSlice.js"
 
 
 const initialValues = {
@@ -20,16 +22,18 @@ const initialValues = {
   username: "",
   email: "",
   password: "",
-  avatar: "",
-  coverImage: "",
+  avatar: null,
+  coverImage: null,
 };
 
 const Signup = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const { errors, values, handleChange, handleSubmit, touched } =
+  const { errors, values, handleChange, handleSubmit, touched, setFieldValue } =
     useFormik({
-      initialValues: initialValues,
+      initialValues,
       validationSchema: signUpSchema,
       onSubmit: () => {
         registerUserMutation.mutate();
@@ -37,23 +41,38 @@ const Signup = () => {
     });
 
   const registerUserMutation = useMutation({
-    mutationFn: async () => await registerUser(values),
-    onSuccess: () => {
-      setLoading(false);
-      toast.success("You are registered successfully!");
-      action.resetForm();
+    mutationFn: async () => {
+      const formData = new FormData();
+
+      formData.append('fullName', values.fullName);
+      formData.append('username', values.username);
+      formData.append('email', values.email);
+      formData.append('password', values.password);
+      if (values.avatar) formData.append('avatar', values.avatar);
+      if (values.coverImage) formData.append('coverImage', values.coverImage);
+
+      const response = await registerUser(formData);
+
+      const status = response.statusCode;
+      if (status == 200) {
+        navigate("/login");
+      }
+      return response;
     },
-    onError: (error) => {
+    onSuccess: (data, action) => {
+      console.log("data", data);
       setLoading(false);
-      toast.error(error.response.data.message);
-      action.resetForm();
+      dispatch(setUser(data.data));
+      toast.success("You are registered successfully!");
+    },
+    onError: (error, action) => {
+      setLoading(false);
+      toast.error(error.message);
     }
   });
 
-
   return (
     <>
-
       <Stack
         sx={{
           width: "100%",
@@ -191,7 +210,9 @@ const Signup = () => {
           <Stack direction={{ xs: "column", lg: "row" }} gap={"1.5rem"}>
             <Stack sx={{ marginTop: "1rem", width: { xs: "100%", lg: "49%" } }}>
               <Textsm text="Profile Picture" />
-              <UploadImage value={values.avatar} onchange={handleChange} name="avatar" title="Profile Picture" />
+              {/* <UploadI  mage value={values.avatar} onchange={handleChange} setFieldValue={setFieldValue} name="avatar" title="Profile Picture" /> */}
+              <UploadImage name="avatar" setFieldValue={setFieldValue} title="Profile Picture" />
+
             </Stack>
             <Stack
               sx={{
@@ -200,7 +221,9 @@ const Signup = () => {
               }}
             >
               <Textsm text="Cover Image" />
-              <UploadImage value={values.coverImage} onchange={handleChange} name="coverImage" title="Cover Image" />
+              {/* <UploadImage value={values.coverImage} onchange={handleChange} setFieldValue={setFieldValue} name="coverImage" title="Cover Image" /> */}
+              <UploadImage name="coverImage" setFieldValue={setFieldValue} title="Cover Image" />
+
             </Stack>
           </Stack>
           <Button
