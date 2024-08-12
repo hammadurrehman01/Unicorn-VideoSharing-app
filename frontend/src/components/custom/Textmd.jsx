@@ -5,6 +5,8 @@ const Textmd = ({ text }) => {
         <Typography sx={{
             fontSize: "24px",
             fontWeight: "medium",
+            color: "#c5d5ce",
+
         ...sx
         }}>{text}</Typography>
     )

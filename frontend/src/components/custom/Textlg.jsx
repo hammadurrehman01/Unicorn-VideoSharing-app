@@ -5,6 +5,8 @@ const Textlg = ({ text, sx }) => {
         <Typography sx={{
             fontSize: "24px",
             fontWeight: "bold",
+            color: "#c5d5ce",
+
             ...sx
         }}>{text}</Typography>
     )
