@@ -31,7 +31,8 @@ const Signup = () => {
     useFormik({
       initialValues: initialValues,
       validationSchema: signUpSchema,
-      onSubmit: () => {
+      onSubmit: (values) => {
+        console.log("values ===>", values);
         registerUserMutation.mutate();
       },
     });
