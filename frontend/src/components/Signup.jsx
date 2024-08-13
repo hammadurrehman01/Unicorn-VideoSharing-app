@@ -1,20 +1,18 @@
 import { Button, CircularProgress, Input, Stack, Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import "../index.css";
-import Textlg from "./custom/Textlg";
-import Textsm from "./custom/Textsm";
-import Textmd from "./custom/Textsm";
-import UploadImage from "./custom/UploadImage";
-import PasswordInput from "./custom/PasswordInput";
+import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "../index.css";
+import { setUser } from "../redux/slices/userSlice.js";
 import { signUpSchema } from "../schema";
 import { registerUser } from "../services/apiService";
-import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setUser } from "../redux/slices/userSlice.js"
+import PasswordInput from "./custom/PasswordInput";
+import Textlg from "./custom/Textlg";
+import { default as Textmd, default as Textsm } from "./custom/Textsm";
+import UploadImage from "./custom/UploadImage";
 
 
 const initialValues = {

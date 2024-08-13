@@ -6,3 +6,8 @@ export const signUpSchema = Yup.object({
   username: Yup.string().min(3).max(20).required("Please enter your username"),
   password: Yup.string().min(6).required("Please enter your password"),
 });
+
+export const loginSchema = Yup.object({
+  email: Yup.string().email().required("Please enter your email"),
+  password: Yup.string().min(6).required("Please enter your password"),
+});

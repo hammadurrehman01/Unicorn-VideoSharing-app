@@ -1,5 +1,5 @@
-import { Box, Button, Input, Stack } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Button, CircularProgress, Input, Stack, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import { KeyboardBackspace, RemoveRedEye, VisibilityOff } from '@mui/icons-material';
 
 import "../index.css"
@@ -8,8 +8,57 @@ import Textsm from "./custom/Textsm"
 import Textmd from "./custom/Textsm"
 import SubmitButton from "./custom/SubmitButton";
 import PasswordInput from "./custom/PasswordInput";
+import { loginUser } from "../services/apiService";
+import { useState } from "react";
+import { useFormik } from "formik";
+import { loginSchema } from "../schema";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+
+const initialValues = {
+    email: "",
+    password: "",
+};
 
 const Login = () => {
+
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const { errors, values, handleChange, handleSubmit, touched, setFieldValue } =
+        useFormik({
+            initialValues,
+            validationSchema: loginSchema,
+            onSubmit: (values) => {
+                console.log("values ===>", values);
+                setLoading(true)
+                loginUserMutation.mutate();
+            },
+        });
+
+    const loginUserMutation = useMutation({
+        mutationFn: async () => {
+            const response = await loginUser(values);
+            console.log("response", response);
+
+            const status = response.statusCode;
+            if (status == 200) {
+                navigate("/dashboard");
+            }
+            return response;
+        },
+        onSuccess: (data, action) => {
+            console.log("data", data);
+            setLoading(false);
+            toast.success("You are Logged in successfully!");
+        },
+        onError: (error, action) => {
+            setLoading(false);
+            console.log(error);
+            toast.error(error.response.data.message || "Something went wrong");
+        }
+    });
+
     return (
         <Stack sx={{
             width: "100%",
@@ -36,9 +85,11 @@ const Login = () => {
                 <Stack sx={{ marginTop: "1rem", }}>
                     <Textsm text="Email" />
                     <Input
-                        type="email"
-                        disableUnderline={true}
                         name="email"
+                        type="email"
+                        value={values.email}
+                        onChange={handleChange}
+                        disableUnderline={true}
                         placeholder="Enter your email"
                         sx={{
                             border: "1px solid #F2F2F2",
@@ -50,14 +101,49 @@ const Login = () => {
 
                         }}
                     ></Input>
+                    {errors.email && touched.email && (
+                        <Typography
+                            sx={{ color: "white", fontSize: "12px", marginLeft: "6px" }}
+                        >
+                            {errors.email}
+                        </Typography>
+                    )}
                 </Stack>
 
                 <Stack sx={{ marginTop: "1rem" }}>
                     <Textsm text="Password" />
-                    <PasswordInput />
+                    <PasswordInput name="password"
+                        errors={errors}
+                        onchange={handleChange}
+                        value={values.password} />
+                    {errors.password && touched.password && (
+                        <Typography
+                            sx={{ color: "white", fontSize: "12px", marginLeft: "6px" }}
+                        >
+                            {errors.password}
+                        </Typography>
+                    )}
                 </Stack>
 
-                <SubmitButton text="Login" />
+                <Button
+                    sx={{
+                        color: "white",
+                        fontSize: "1rem",
+                        backgroundColor: "#8665c1",
+                        "&:hover": { backgroundColor: "#8665c1" },
+                        marginTop: "2rem",
+                    }}
+                    component="button"
+                    role={undefined}
+                    disableRipple
+                    tabIndex={-1}
+                    onClick={() => {
+
+                        handleSubmit()
+                    }}
+                >
+                    {loading ? <CircularProgress sx={{ color: "#6640aa" }} size={30} /> : "Login"}
+                </Button>
             </Stack>
         </Stack>
     )

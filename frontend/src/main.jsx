@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { Provider } from "react-redux";
 import store from "./redux/store/index.js";
+import Dashboard from "./components/Dashboard.jsx";
 
 
 const queryClient = new QueryClient();
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />
   },
 ]);
 
